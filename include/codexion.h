@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/13 21:01:53 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/13 21:27:31 by tlogtenb         ###   ########.fr       */
+/*   Created: 2026/05/13 21:25:47 by tlogtenb          #+#    #+#             */
+/*   Updated: 2026/05/13 21:27:16 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/codexion.h"
+#ifndef CODEXION_H
 
-int	main(int argc, char *argv[])
-{
-	(void) argc;
-	(void) argv;
-	printf("Hello Codexion!");
-	return 0;
-}
+# define CODEXION_H
+
+#include <pthread.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <string.h>
+
+#endif // CODEXION_H
