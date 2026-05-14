@@ -1,7 +1,7 @@
 NAME = codexion
 
 CC = cc
-FLAGS = -Wall -Werror -Wextra -I./include
+FLAGS = -g -Wall -Werror -Wextra -I./include
 INCLUDE = include
 SOURCE = src
 
