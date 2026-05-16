@@ -22,31 +22,36 @@
 # include <string.h>
 # include <stdbool.h>
 
-typedef struct s_arguments
-{
-	size_t	num_coders;
-	size_t	tt_burn;
-	size_t	tt_compile;
-	size_t	tt_debug;
-	size_t	tt_refactor;
-	size_t	num_compiles_req;
-	size_t	dong_cool;
-	size_t	tp_cycle;
-	size_t	total_time;
-	bool	use_fifo;
-	bool	use_edf;
-}	t_arguments;
+typedef struct s_table	t_table;
 
 typedef struct s_coder
 {
-	struct timeval	last_compilation;
-	bool			compiling;
-	bool			debugging;
-	bool			refactoring;
-	bool			burned;
+	int			id;
+	long		last_comp_time;
+	int			compile_count;
+	pthread_t	thread;
+	t_table		*table;
 }	t_coder;
 
-int	parse_args(int argc, char *argv[], t_arguments *args);
+typedef struct s_table
+{
+	int				num_coders;
+	long			burnout_time;
+	long			compile_duration;
+	long			refactor_duration;
+	long			debug_duration;
+	long			dongle_cooldown;
+	int				required_compiles;
+	int				someone_burned_out;
+	int				total_compiles;
+	char			*scheduler;
+	pthread_mutex_t	*dongles;
+	pthread_mutex_t	print_lock;
+	pthread_mutex_t	state_lock;
+	t_coder			*coders;
+}	t_table;
+
+int	parse_args(int argc, char *argv[], t_table *args);
 int	print_errors(char *message);
 
 #endif // CODEXION_H

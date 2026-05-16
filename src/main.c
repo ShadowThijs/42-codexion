@@ -35,11 +35,11 @@ int	print_errors(char *message)
 
 int	main(int argc, char *argv[])
 {
-	t_arguments		*args;
+	t_table			*args;
 	int				parser;
 	struct timeval	tv;
 
-	args = malloc(sizeof(t_arguments));
+	args = malloc(sizeof(t_table));
 	if (!args)
 		return (print_errors("malloc for arguments failed!"));
 	parser = parse_args(argc, argv, args);

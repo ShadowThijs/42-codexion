@@ -32,39 +32,32 @@ static int	check_args(char *argv[])
 	return (1);
 }
 
-int	quick_checks(t_arguments *args)
+int	quick_checks(t_table *args)
 {
-	if (args->tt_compile + args->dong_cool >= args->tt_burn)
+	if (args->compile_duration + args->dongle_cooldown >= args->burnout_time)
 		return (print_errors("Compile time and cooldown dongles too high!\n"
 				"\tTry lowering compile/dongle cooldown times.\n"
 				"\tOr increase time to burn out."));
 	if (args->num_coders > 1
-		&& (args->num_compiles_req / (args->num_coders / 2) * args->tt_compile)
-		> args->tt_burn * args->num_compiles_req)
+		&& (args->required_compiles / (args->num_coders / 2) * args->compile_duration)
+		> args->burnout_time * args->required_compiles)
 		return (print_errors("Throughput impossible!"));
-	args->tp_cycle = args->tt_compile + args->tt_debug + args->tt_refactor;
-	args->total_time = args->num_compiles_req * args->tp_cycle;
 	return (0);
 }
 
-int	parse_args(int argc, char *argv[], t_arguments *args)
+int	parse_args(int argc, char *argv[], t_table *args)
 {
 	if (argc != 9)
 		return (print_errors("Not enough arguments!"));
 	if (check_args(argv) == -1)
 		return (print_errors("Incorrect arguments provided!"));
 	args->num_coders = atoi(argv[1]);
-	args->tt_burn = atoi(argv[2]);
-	args->tt_compile = atoi(argv[3]);
-	args->tt_debug = atoi(argv[4]);
-	args->tt_refactor = atoi(argv[5]);
-	args->num_compiles_req = atoi(argv[6]);
-	args->dong_cool = atoi(argv[7]);
-	if (!strcmp(argv[8], "fifo"))
-		args->use_fifo = true;
-	else if (!strcmp(argv[8], "edf"))
-		args->use_edf = true;
-	else
-		return (-1);
+	args->burnout_time = (long)atoi(argv[2]);
+	args->compile_duration = (long)atoi(argv[3]);
+	args->debug_duration = (long)atoi(argv[4]);
+	args->refactor_duration = atoi(argv[5]);
+	args->required_compiles = atoi(argv[6]);
+	args->dongle_cooldown = atoi(argv[7]);
+	args->scheduler = argv[8];
 	return (quick_checks(args));
 }
