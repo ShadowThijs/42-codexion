@@ -6,7 +6,7 @@
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 16:57:11 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/14 23:21:24 by tlogtenb         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:44:59 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ int	quick_checks(t_table *args)
 				"\tTry lowering compile/dongle cooldown times.\n"
 				"\tOr increase time to burn out."));
 	if (args->num_coders > 1
-		&& (args->required_compiles / (args->num_coders / 2) * args->compile_duration)
+		&& (args->required_compiles / (args->num_coders / 2)
+			* args->compile_duration)
 		> args->burnout_time * args->required_compiles)
 		return (print_errors("Throughput impossible!"));
-	return (0);
+	return (1);
 }
 
 int	parse_args(int argc, char *argv[], t_table *args)
@@ -59,5 +60,6 @@ int	parse_args(int argc, char *argv[], t_table *args)
 	args->required_compiles = atoi(argv[6]);
 	args->dongle_cooldown = atoi(argv[7]);
 	args->scheduler = argv[8];
+	args->someone_burned_out = 0;
 	return (quick_checks(args));
 }

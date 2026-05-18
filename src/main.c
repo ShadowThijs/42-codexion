@@ -6,11 +6,12 @@
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 21:01:53 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/14 23:08:13 by tlogtenb         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:49:38 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+#include <sys/time.h>
 
 /*
 	* One or more coders sit in a circle, they share a compiler
@@ -30,23 +31,40 @@
 int	print_errors(char *message)
 {
 	fprintf(stderr, "ERROR:\t%s\n", message);
-	return (-1);
+	return (0);
+}
+
+long	tt_start(struct timeval start_tv)
+{
+	struct timeval	now_tv;
+
+	gettimeofday(&now_tv, NULL);
+	if (start_tv.tv_sec == now_tv.tv_sec)
+		return ((now_tv.tv_usec - start_tv.tv_usec) / USEC_TO_MSEC);
+	return (
+		((now_tv.tv_sec - start_tv.tv_sec) * USEC_TO_MSEC)
+		+ ((now_tv.tv_usec - start_tv.tv_usec) / USEC_TO_MSEC)
+	);
 }
 
 int	main(int argc, char *argv[])
 {
 	t_table			*args;
-	int				parser;
-	struct timeval	tv;
+	struct timeval	start_tv;
 
 	args = malloc(sizeof(t_table));
 	if (!args)
 		return (print_errors("malloc for arguments failed!"));
-	parser = parse_args(argc, argv, args);
-	if (parser != 0)
-		return (-1);
-	gettimeofday(&tv, NULL);
-	printf("Seconds since 1/1/1970: %lu\n", tv.tv_sec);
-	printf("Microseconds: %ld\n", tv.tv_usec);
+	if (!parse_args(argc, argv, args))
+		return (print_errors("Could not parse arguments"));
+	gettimeofday(&start_tv, NULL);
+	printf("Seconds since 1/1/1970: %lu\n", start_tv.tv_sec);
+	printf("Microseconds: %ld\n", start_tv.tv_usec);
+	usleep(50 * USEC_TO_MSEC);
+	printf("Time from start in MS: %ld", tt_start(start_tv));
+	if (!init_coders(args, start_tv))
+		return (print_errors("Could not initialise coders"));
+	if (!init_dongles(args))
+		return (print_errors("Could not initialise dongles"));
 	return (0);
 }
