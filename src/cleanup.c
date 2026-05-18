@@ -6,7 +6,7 @@
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:24:02 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/18 15:27:22 by tlogtenb         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:03:12 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,4 @@ void	cleanup_args(t_table *args)
 	}
 	free(args->dongles);
 	free(args->coders);
-
 }

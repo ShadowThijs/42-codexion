@@ -6,7 +6,7 @@
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 14:37:38 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/18 15:41:39 by tlogtenb         ###   ########.fr       */
+/*   Updated: 2026/05/18 16:03:43 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	init_dongles(t_table *args)
 	n = args->num_coders;
 	args->dongles = malloc(n * sizeof(pthread_mutex_t));
 	if (!args->dongles)
-		return(print_errors("Unable to malloc dongles!"));
+		return (print_errors("Unable to malloc dongles!"));
 	while (i < n)
 	{
 		pthread_mutex_init(&args->dongles[i], NULL);
