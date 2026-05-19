@@ -21,7 +21,9 @@ void	cleanup_args(t_table *args)
 	i = 0;
 	while (i < n)
 	{
-		pthread_mutex_destroy(&args->dongles[i]);
+		pthread_mutex_destroy(&args->dongles[i].lock);
+		pthread_cond_destroy(&args->dongles[i].cond);
+		free(args->dongles[i].queue.nodes);
 		i++;
 	}
 	free(args->dongles);

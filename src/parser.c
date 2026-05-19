@@ -6,7 +6,7 @@
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 16:57:11 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/18 15:44:59 by tlogtenb         ###   ########.fr       */
+/*   Updated: 2026/05/18 17:06:08 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,10 @@ static int	check_args(char *argv[])
 int	quick_checks(t_table *args)
 {
 	if (args->compile_duration + args->dongle_cooldown >= args->burnout_time)
-		return (print_errors("Compile time and cooldown dongles too high!\n"
-				"\tTry lowering compile/dongle cooldown times.\n"
-				"\tOr increase time to burn out."));
-	if (args->num_coders > 1
-		&& (args->required_compiles / (args->num_coders / 2)
-			* args->compile_duration)
-		> args->burnout_time * args->required_compiles)
+		return (print_errors("Compile time and cooldown dongles too high!"));
+	if (args->num_coders > 1 && (args->required_compiles / (args->num_coders
+				/ 2) * args->compile_duration) > args->burnout_time
+		* args->required_compiles)
 		return (print_errors("Throughput impossible!"));
 	return (1);
 }
@@ -53,6 +50,8 @@ int	parse_args(int argc, char *argv[], t_table *args)
 	if (check_args(argv) == -1)
 		return (print_errors("Incorrect arguments provided!"));
 	args->num_coders = atoi(argv[1]);
+	if (args->num_coders == 1)
+		return (print_errors("Cannot start with 1 dongle!"));
 	args->burnout_time = (long)atoi(argv[2]);
 	args->compile_duration = (long)atoi(argv[3]);
 	args->debug_duration = (long)atoi(argv[4]);
@@ -61,5 +60,7 @@ int	parse_args(int argc, char *argv[], t_table *args)
 	args->dongle_cooldown = atoi(argv[7]);
 	args->scheduler = argv[8];
 	args->someone_burned_out = 0;
+	pthread_mutex_init(&args->print_lock, NULL);
+	pthread_mutex_init(&args->state_lock, NULL);
 	return (quick_checks(args));
 }
