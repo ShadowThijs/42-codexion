@@ -6,7 +6,7 @@
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 21:01:53 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/19 16:57:18 by tlogtenb         ###   ########.fr       */
+/*   Updated: 2026/06/12 16:18:04 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,20 @@ int	main(int argc, char *argv[])
 
 	args = malloc(sizeof(t_table));
 	if (!args)
-		return (print_errors("malloc for arguments failed!"));
+		return (print_errors("malloc for arguments failed!",
+				args));
+	memset(args, 0, sizeof(t_table));
 	if (!parse_args(argc, argv, args))
-		return (print_errors("Arguments error!"));
+	{
+		print_help(argv);
+		return (print_errors("Invalid arguments!", args));
+	}
 	gettimeofday(&args->start_time, NULL);
 	if (!init_coders(args))
-		return (print_errors("Could not initialise coders!"));
+		return (print_errors("Could not initialise coders!", args));
 	if (!init_dongles(args))
-		return (print_errors("Could not initialise dongles!"));
+		return (print_errors("Could not initialise dongles!", args));
 	start_threads(args);
+	cleanup_args(args);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 16:57:11 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/18 17:06:08 by tlogtenb         ###   ########.fr       */
+/*   Updated: 2026/06/12 15:50:45 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,28 @@ static int	check_args(char *argv[])
 int	quick_checks(t_table *args)
 {
 	if (args->compile_duration + args->dongle_cooldown >= args->burnout_time)
-		return (print_errors("Compile time and cooldown dongles too high!"));
+		return (print_errors(
+				"Compile time and cooldown dongles too high!",
+				args));
 	if (args->num_coders > 1 && (args->required_compiles / (args->num_coders
 				/ 2) * args->compile_duration) > args->burnout_time
 		* args->required_compiles)
-		return (print_errors("Throughput impossible!"));
+		return (print_errors("Throughput impossible!",
+				args));
 	return (1);
 }
 
 int	parse_args(int argc, char *argv[], t_table *args)
 {
 	if (argc != 9)
-		return (print_errors("Not enough arguments!"));
+		return (0);
 	if (check_args(argv) == -1)
-		return (print_errors("Incorrect arguments provided!"));
+		return (print_errors("Incorrect arguments provided!",
+				args));
 	args->num_coders = atoi(argv[1]);
 	if (args->num_coders == 1)
-		return (print_errors("Cannot start with 1 dongle!"));
+		return (print_errors("Cannot start with 1 dongle!",
+				args));
 	args->burnout_time = (long)atoi(argv[2]);
 	args->compile_duration = (long)atoi(argv[3]);
 	args->debug_duration = (long)atoi(argv[4]);

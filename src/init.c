@@ -20,7 +20,8 @@ int	init_coders(t_table *args)
 	n = args->num_coders;
 	args->coders = malloc(n * sizeof(t_coder));
 	if (!args->coders)
-		return (print_errors("Could not malloc coders array"));
+		return (print_errors("Could not malloc coders array",
+				args));
 	i = 0;
 	while (i < n)
 	{
@@ -42,7 +43,8 @@ int	init_dongles(t_table *args)
 	i = 0;
 	args->dongles = malloc(n * sizeof(t_dongle));
 	if (!args->dongles)
-		return (print_errors("Unable to malloc dongles!"));
+		return (print_errors("Unable to malloc dongles!", args));
+	memset(args->dongles, 0, n * sizeof(t_dongle));
 	while (i < n)
 	{
 		pthread_mutex_init(&args->dongles[i].lock, NULL);
@@ -52,7 +54,8 @@ int	init_dongles(t_table *args)
 		args->dongles[i].queue.nodes = malloc(sizeof(t_wait_node)
 				* args->num_coders);
 		if (!args->dongles[i].queue.nodes)
-			return (print_errors("Unable to malloc queue nodes!"));
+			return (print_errors("Unable to malloc queue nodes!",
+					args));
 		args->dongles[i].queue.size = 0;
 		args->dongles[i].queue.capacity = args->num_coders;
 		i++;

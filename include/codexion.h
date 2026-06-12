@@ -6,7 +6,7 @@
 /*   By: tlogtenb <tlogtenb@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 21:25:47 by tlogtenb          #+#    #+#             */
-/*   Updated: 2026/05/19 17:35:50 by tlogtenb         ###   ########.fr       */
+/*   Updated: 2026/06/12 16:07:41 by tlogtenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_table
 }	t_table;
 
 int				parse_args(int argc, char *argv[], t_table *args);
-int				print_errors(char *message);
+int				print_errors(char *message, t_table *args);
 int				init_coders(t_table *args);
 void			log_dong_taken(size_t timestamp, t_coder *coder,
 					t_table *table);
@@ -107,5 +107,7 @@ t_wait_node		heap_pop(t_wait_queue *q, t_table *table);
 void			acquire_dongle(t_coder *coder, int dongle_idx);
 void			release_dongle(t_coder *coder, int dongle_idx);
 void			*monitor_routine(void *arg);
+void			print_help(char *argv[]);
+void			cleanup_args(t_table *args);
 
 #endif // CODEXION_H

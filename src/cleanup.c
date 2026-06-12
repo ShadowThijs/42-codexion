@@ -17,15 +17,21 @@ void	cleanup_args(t_table *args)
 	int	n;
 	int	i;
 
+	if (!args)
+		return ;
 	n = args->num_coders;
 	i = 0;
-	while (i < n)
+	if (args->dongles)
 	{
-		pthread_mutex_destroy(&args->dongles[i].lock);
-		pthread_cond_destroy(&args->dongles[i].cond);
-		free(args->dongles[i].queue.nodes);
-		i++;
+		while (i < n)
+		{
+			pthread_mutex_destroy(&args->dongles[i].lock);
+			pthread_cond_destroy(&args->dongles[i].cond);
+			free(args->dongles[i].queue.nodes);
+			i++;
+		}
+		free(args->dongles);
 	}
-	free(args->dongles);
 	free(args->coders);
+	free(args);
 }
