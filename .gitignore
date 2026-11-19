@@ -1,4 +1,6 @@
 subject.md
 *.o
 codexion
-.omc
+codexion_asan
+codexion_tsan
+fails/
